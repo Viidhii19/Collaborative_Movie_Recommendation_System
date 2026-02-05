@@ -205,15 +205,6 @@ This project teaches:
 * Add frontend / UI
 ---
 
-## 🧑‍🏫 Learning Outcome
-
-This project prioritizes:
-
-* Understanding over complexity
-* Flow of data over fancy code
-* Conceptual clarity for LLM readiness
-
----
 
 
 
