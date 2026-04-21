@@ -111,25 +111,6 @@ Predicted next movies:
 
 ---
 
-## 📈 Results & Evaluation
-
-(*You MUST fill this section — critical for credibility*)
-
-Suggested metrics to include:
-
-* Top-K Accuracy (Top-5 / Top-10)
-* Hit Rate
-* Perplexity (optional)
-
-Example format:
-
-* Top-5 Accuracy: XX%
-* Top-10 Accuracy: XX%
-
-Without this section, the model’s effectiveness cannot be validated.
-
----
-
 ## ⚖️ Comparison with Traditional Methods
 
 | Method                  | Sequence Awareness | Context Understanding |
