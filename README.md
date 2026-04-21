@@ -1,208 +1,171 @@
-# Collaborative_Movie_Recommendation_System
-## 📌 Project Overview
+# 🎬 Transformer-Based Movie Recommendation System
 
-This project implements a **collaborative movie recommendation system** using the **Netflix Prize Dataset** and a **Transformer architecture**.
+A **sequence-aware collaborative filtering system** that uses a **Transformer architecture** to predict the next movie a user is likely to watch.
 
-Instead of traditional recommendation methods (like KNN or SVD), this system models **user watch history as a sequence**, similar to how Large Language Models (LLMs) model text.
-
-> **Key idea:**
-> Movies = tokens
-> User history = sentence
-> Predict next movie = next-token prediction (GPT logic)
-
-This project is designed to **deeply understand Transformers and LLM fundamentals**, not just to build a recommender.
+Instead of predicting ratings (traditional approach), this system models user behavior as a **sequence prediction problem**, similar to how GPT models generate text.
 
 ---
 
-## 🎯 Objectives
+## 🚀 Why This Project Matters
 
-* Understand collaborative filtering from first principles
-* Learn how **sequential recommendation** works
-* Apply **Transformer architecture** to non-text data
-* Bridge the conceptual gap between **Recommender Systems and LLMs**
-* Focus on **code understanding and data flow**, not just execution
+Traditional recommender systems (KNN, SVD):
 
----
+* Ignore sequence order
+* Treat interactions as static
 
-## 📂 Dataset Used
+This system:
 
-**Netflix Prize Dataset** (Kaggle)
-
-* ~17,770 movies
-* ~480,000 users
-* ~100 million ratings (sampled for feasibility)
-
-### Files Used:
-
-* `movie_titles.csv` – movie metadata
-* `combined_data_1.txt` – user ratings (sampled)
+* Learns **watch patterns over time**
+* Captures **contextual relationships between movies**
+* Applies **LLM-style learning to recommendation systems**
 
 ---
 
-## 🧠 Core Concept
+## 🧠 Core Idea
 
-Traditional recommender systems predict ratings:
+Reframing recommendation as next-token prediction:
 
-```
-User + Movie → Rating
-```
+* Movies → Tokens
+* User history → Sequence
+* Next movie → Prediction
 
-This project predicts **next movie** instead:
+Example:
 
-```
-(Movie₁, Movie₂, Movie₃) → Movie₄
-```
+[Movie₁, Movie₂, Movie₃] → Movie₄
 
-This is the **same training objective used in GPT models**.
+This is the same learning paradigm used in GPT models.
 
 ---
 
-## 🏗️ Project Architecture
+## 🏗️ System Pipeline
 
-```
-Netflix Dataset
-      ↓
-Data Cleaning & Parsing
-      ↓
-Filter Positive Ratings (≥ 4)
-      ↓
-User Watch Sequences
-      ↓
-GPT-style Input–Target Pairs
-      ↓
-Padding & Batching
-      ↓
-Transformer Encoder
-      ↓
-Next-Movie Prediction
-```
+1. **Data Ingestion**
 
----
+   * Netflix Prize Dataset (~100M ratings, sampled)
 
-## 🧹 Data Processing Steps
+2. **Preprocessing**
 
-### 1. Load & Clean Data
+   * Clean and parse raw data
+   * Merge ratings with movie metadata
 
-* Parse raw Netflix text files
-* Merge movie titles with ratings
-* Store clean data in `netflix_final.csv`
+3. **Filtering**
 
-### 2. Filter Ratings
+   * Keep only positive interactions (rating ≥ 4)
 
-Only ratings ≥ 4 are kept to model **user preferences**, not dislikes.
+4. **Sequence Construction**
 
-### 3. Tokenization
+   * Convert user histories into sequential training samples
 
-Movie IDs are converted to **continuous integer tokens**, just like word tokenization in NLP.
+5. **Tokenization**
 
----
+   * Map movie IDs → integer tokens
 
-## 🔄 Sequence Construction (Key Learning)
+6. **Dataset Preparation**
 
-For a user who watched:
+   * Padding and batching for fixed-length input
 
-```
-[10, 25, 80, 91]
-```
+7. **Model**
 
-Training samples created:
+   * Transformer Encoder with multi-head self-attention
 
-```
-[10]        → 25
-[10, 25]    → 80
-[10, 25, 80]→ 91
-```
+8. **Prediction**
 
-This is **exactly how GPT is trained**.
-
----
-
-## 📦 Dataset Class
-
-A custom PyTorch `Dataset`:
-
-* Breaks user history into input → target pairs
-* Pads sequences to fixed length
-* Outputs tensors suitable for Transformer input
+   * Outputs probability distribution over all movies
 
 ---
 
 ## 🤖 Model Architecture
 
-### Transformer-Based Recommender
-
-* **Embedding Layer**: Movie → Vector
+* **Embedding Layer**: Converts movie IDs into dense vectors
 * **Transformer Encoder**:
 
   * Multi-head self-attention
-  * Learns relationships between past movies
-* **Linear Output Layer**:
+  * Captures relationships across watched movies
+* **Output Layer**:
 
-  * Predicts probability over all movies
----
-
-## 🏋️ Training Objective
-
-* **Loss Function**: Cross-Entropy Loss
-* **Optimizer**: Adam
-* **Goal**: Maximize probability of correct next movie
+  * Fully connected layer for next-movie prediction
 
 ---
 
-## 🔍 Recommendation Logic
+## 🧪 Training Details
 
-Given a sequence of watched movies:
-
-1. Convert titles → movie tokens
-2. Pad to fixed length
-3. Pass through Transformer
-4. Select top-K predicted movies
-5. Convert tokens → movie titles
+* Loss Function: Cross-Entropy
+* Optimizer: Adam
+* Objective: Maximize likelihood of correct next movie
 
 ---
 
-## 📊 Example Output
+## 📊 Example Recommendations
 
-**User watched:**
+Input sequence:
 
-```
-Reservoir Dogs
-Dogma
-Lilo and Stitch
-```
+* Reservoir Dogs
+* Dogma
+* Lilo & Stitch
 
-**Recommended movies:**
+Predicted next movies:
 
-```
-North by Northwest
-The Deer Hunter
-Chasing Amy
-```
-
-Recommendations are based on **collaborative patterns across all users**.
+* North by Northwest
+* The Deer Hunter
+* Chasing Amy
 
 ---
 
-## 🧠 Why This Project Matters
+## 📈 Results & Evaluation
 
-This project teaches:
+(*You MUST fill this section — critical for credibility*)
 
-* How Transformers work beyond text
-* Why padding, batching, and tokenization exist
-* How LLMs learn from sequences
-* How attention captures long-term dependencies
+Suggested metrics to include:
+
+* Top-K Accuracy (Top-5 / Top-10)
+* Hit Rate
+* Perplexity (optional)
+
+Example format:
+
+* Top-5 Accuracy: XX%
+* Top-10 Accuracy: XX%
+
+Without this section, the model’s effectiveness cannot be validated.
+
+---
+
+## ⚖️ Comparison with Traditional Methods
+
+| Method                  | Sequence Awareness | Context Understanding |
+| ----------------------- | ------------------ | --------------------- |
+| KNN                     | ❌ No               | ❌ Limited             |
+| SVD                     | ❌ No               | ❌ Limited             |
+| Transformer (This Work) | ✅ Yes              | ✅ Strong              |
+
+---
+
+## 🧠 Key Learnings
+
+* How Transformers generalize beyond NLP
+* Importance of sequence modeling in recommendations
+* Role of attention in capturing user behavior
+* Data pipeline design for large-scale sequential systems
+
 ---
 
 ## ⚠️ Limitations
 
-* Sampled dataset used for feasibility
-* Not optimized for large-scale deployment
+* Trained on sampled dataset (not full scale)
+* No hyperparameter optimization
+* Cold-start problem not addressed
 
 ---
 
-## Output:
+## 🚧 Future Improvements
+
+* Incorporate temporal embeddings
+* Hybrid model (content + collaborative)
+* Fine-tune with larger dataset
+* Deploy as real-time recommendation API
+
+---
+
+## 🎥 Demo
 
 https://drive.google.com/file/d/1zblcSgEyVbHYxe5F_LK7qHxMqzkp1MwW/view?usp=sharing
-
-
-
